@@ -13,6 +13,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Gender selectedGender;
+  int height = 180;
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +76,33 @@ class _InputPageState extends State<InputPage> {
                       textBaseline: TextBaseline.alphabetic,
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       children: <Widget>[
-                        Text('180', style: kSelectionTextStyle),
-                        Text(' in', style: kLabelTextStyle)
+                        Text(height.toString(), style: kSelectionTextStyle),
+                        Text(' cm', style: kLabelTextStyle)
                       ],
                     ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        activeTrackColor: Colors.white,
+                        inactiveTrackColor: Color(0xFF8D8E98),
+                        thumbColor: Color(0xFFEB1555),
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                        overlayColor: Color(0x15EB1555),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 23.0),
+                      ),
+                      child: Slider(
+                        value: height.toDouble(),
+                        min: 120.0,
+                        max: 220.0,
+                        onChanged: (double newValue) {
+                          //print(newValue);
+                          setState(() {
+                            height = newValue.round();
+                          });
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
