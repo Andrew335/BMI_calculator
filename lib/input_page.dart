@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
-
-const bottomContainerHeight = 80.0;
-const activeCardColor = Color(0xFF1d1e33);
-const inactiveCardColor = Color(0xFF111328);
-const bottomContainerColor = Color(0xFFEB1555);
+import 'constants.dart';
 
 enum Gender { male, female }
 
@@ -16,27 +12,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColor = inactiveCardColor;
-  Color femaleCardColor = inactiveCardColor;
-
-  //1 = male, 2 = female
-  void updateColor(Gender gender) {
-    if (gender == Gender.male) {
-      if (maleCardColor == activeCardColor) {
-        maleCardColor = inactiveCardColor;
-      } else {
-        maleCardColor = activeCardColor;
-        femaleCardColor = inactiveCardColor;
-      }
-    } else {
-      if (femaleCardColor == activeCardColor) {
-        femaleCardColor = inactiveCardColor;
-      } else {
-        maleCardColor = inactiveCardColor;
-        femaleCardColor = activeCardColor;
-      }
-    }
-  }
+  Gender selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -47,69 +23,85 @@ class _InputPageState extends State<InputPage> {
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        print('Male card was pressed');
+                    child: ReusableCard(
+                      color: selectedGender == Gender.male
+                          ? kActiveCardColor
+                          : kInactiveCardColor,
+                      cardChild: IconContent(
+                        cardIcon: FontAwesomeIcons.mars,
+                        cardText: 'MALE',
+                      ),
+                      onPress: () {
                         setState(() {
-                          updateColor(Gender.male);
+                          selectedGender = Gender.male;
                         });
                       },
-                      child: ReusableCard(
-                        color: maleCardColor,
-                        cardChild: IconContent(
-                          cardIcon: FontAwesomeIcons.mars,
-                          cardText: 'MALE',
-                        ),
-                      ),
                     ),
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        print('Female card was pressed');
+                    child: ReusableCard(
+                      color: selectedGender == Gender.female
+                          ? kActiveCardColor
+                          : kInactiveCardColor,
+                      cardChild: IconContent(
+                        cardIcon: FontAwesomeIcons.venus,
+                        cardText: 'FEMALE',
+                      ),
+                      onPress: () {
                         setState(() {
-                          updateColor(Gender.female);
+                          selectedGender = Gender.female;
                         });
                       },
-                      child: ReusableCard(
-                        color: femaleCardColor,
-                        cardChild: IconContent(
-                          cardIcon: FontAwesomeIcons.venus,
-                          cardText: 'FEMALE',
-                        ),
-                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: ReusableCard(color: activeCardColor),
+              child: ReusableCard(
+                color: kActiveCardColor,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('HEIGHT', style: kLabelTextStyle),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      textBaseline: TextBaseline.alphabetic,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      children: <Widget>[
+                        Text('180', style: kSelectionTextStyle),
+                        Text(' in', style: kLabelTextStyle)
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
             Expanded(
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: ReusableCard(color: activeCardColor),
+                    child: ReusableCard(color: kActiveCardColor),
                   ),
                   Expanded(
                     child: ReusableCard(
-                      color: activeCardColor,
+                      color: kActiveCardColor,
                     ),
                   ),
                 ],
               ),
             ),
             Container(
-              color: bottomContainerColor,
+              color: kBottomContainerColor,
               margin: EdgeInsets.only(top: 10.0),
               width: double.infinity,
-              height: bottomContainerHeight,
+              height: kBottomContainerHeight,
             )
           ],
         ),
